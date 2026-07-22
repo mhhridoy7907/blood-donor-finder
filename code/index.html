@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor Finder - Sylhet Division</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-lg">
+            <a class="navbar-brand" href="#" onclick="showSection('home'); return false;">
+                <img class="brand-logo" id="brandLogoImg" src="" alt="Blood Finder Logo" style="display:none;">
+                <i class="fas fa-droplet" id="brandLogoIcon"></i>
+                Blood Finder
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('home'); return false;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('findDonor'); return false;">Find Donor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('emergencyRequest'); return false;">Emergency</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('becomeDonor'); return false;">Become Donor</a>
+                    </li>
+                    <li class="nav-item" id="navNearby" style="display: none;">
+                        <a class="nav-link" href="#" onclick="showSection('nearbyDonors'); return false;">Nearby</a>
+                    </li>
+                    <li class="nav-item" id="navAdmin" style="display: none;">
+                        <a class="nav-link" href="#" onclick="showSection('adminPanel'); return false;">Admin</a>
+                    </li>
+                    <li class="nav-item" id="navDashboard" style="display: none;">
+                        <a class="nav-link" href="#" onclick="showSection('userDashboard'); return false;">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="authLink" href="#" onclick="showSection('login'); return false;">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container-lg">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1><i class="fas fa-droplet"></i> Blood Donor Finder</h1>
+                    <p class="subtitle">Sylhet Division</p>
+                    <p class="hero-description">Find a blood donor. Save a life. Connect with verified blood donors in your area quickly and easily.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary-custom" onclick="showSection('findDonor')">
+                            <i class="fas fa-search"></i> Find Blood Donor
+                        </button>
+                        <button class="btn-secondary-custom" onclick="showSection('becomeDonor')">
+                            <i class="fas fa-heart"></i> Become a Donor
+                        </button>
+                        <button class="btn-emergency" onclick="showSection('emergencyRequest')">
+                            <i class="fas fa-exclamation-circle"></i> Emergency Request
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-section">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
+                            <div class="stat-number" id="totalDonorsCount">0</div>
+                            <div class="stat-label">Total Donors</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-number" id="availableDonorsCount">0</div>
+                            <div class="stat-label">Available Donors</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-hands-helping"></i></div>
+                            <div class="stat-number" id="totalRequestsCount">0</div>
+                            <div class="stat-label">Blood Requests</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-siren"></i></div>
+                            <div class="stat-number" id="emergencyRequestsCount">0</div>
+                            <div class="stat-label">Emergency Requests</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Districts Section -->
+            <div style="margin-top: 60px;">
+                <h2 class="section-title">Sylhet Division Districts</h2>
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="district-card" onclick="searchByDistrict('Sylhet')">
+                            <div class="district-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="district-name">Sylhet</div>
+                            <div class="district-count" id="sylhet-count">0 Donors</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="district-card" onclick="searchByDistrict('Sunamganj')">
+                            <div class="district-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="district-name">Sunamganj</div>
+                            <div class="district-count" id="sunamganj-count">0 Donors</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="district-card" onclick="searchByDistrict('Moulvibazar')">
+                            <div class="district-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="district-name">Moulvibazar</div>
+                            <div class="district-count" id="moulvibazar-count">0 Donors</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4">
+                        <div class="district-card" onclick="searchByDistrict('Habiganj')">
+                            <div class="district-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="district-name">Habiganj</div>
+                            <div class="district-count" id="habiganj-count">0 Donors</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <div style="margin-top: 60px;">
+                <h2 class="section-title">How It Works</h2>
+                <div class="how-it-works">
+                    <div class="how-it-works-step" data-step="1">
+                        <div class="how-it-works-icon"><i class="fas fa-search"></i></div>
+                        <div class="how-it-works-title">Search for a Donor</div>
+                        <div class="how-it-works-description">Find verified blood donors in your area by blood group and location.</div>
+                    </div>
+                    <div class="how-it-works-step" data-step="2">
+                        <div class="how-it-works-icon"><i class="fas fa-phone"></i></div>
+                        <div class="how-it-works-title">Contact the Donor</div>
+                        <div class="how-it-works-description">Connect directly via phone call or WhatsApp message with just one click.</div>
+                    </div>
+                    <div class="how-it-works-step" data-step="3">
+                        <div class="how-it-works-icon"><i class="fas fa-heart"></i></div>
+                        <div class="how-it-works-title">Donate & Save Life</div>
+                        <div class="how-it-works-description">Complete the blood donation and save a precious human life today.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section" style="margin-top: 60px;">
+                <h2>Become a Blood Donor</h2>
+                <p>Join thousands of donors and help save lives in Sylhet Division.</p>
+                <button class="btn-primary-custom" onclick="showSection('becomeDonor')">
+                    <i class="fas fa-user-plus"></i> Register as a Donor
+                </button>
+            </div>
+        </section>
+
+        <!-- Find Donor Section -->
+        <section id="findDonor" class="section">
+            <h2 class="section-title">Find a Blood Donor</h2>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-header">Search Filters</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Blood Group</label>
+                                <select class="form-select" id="searchBloodGroup" onchange="applyFilters()">
+                                    <option value="">All Blood Groups</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">District</label>
+                                <select class="form-select" id="searchDistrict" onchange="updateUpazilas('search')">
+                                    <option value="">All Districts</option>
+                                    <option value="Sylhet">Sylhet</option>
+                                    <option value="Sunamganj">Sunamganj</option>
+                                    <option value="Moulvibazar">Moulvibazar</option>
+                                    <option value="Habiganj">Habiganj</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Upazila</label>
+                                <select class="form-select" id="searchUpazila" onchange="applyFilters()">
+                                    <option value="">All Upazilas</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Area</label>
+                                <input type="text" class="form-control" id="searchArea" placeholder="Enter area name" onkeyup="applyFilters()">
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="availableOnly" onchange="applyFilters()">
+                                    <label class="form-check-label" for="availableOnly">
+                                        Available Now
+                                    </label>
+                                </div>
+                            </div>
+                            <button class="btn-submit" onclick="applyFilters()">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                            <button class="btn-submit" style="background: var(--text-light); margin-top: 0.5rem;" onclick="resetFilters()">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div id="donorResults" class="row" style="min-height: 400px;">
+                        <div class="col-12">
+                            <div class="empty-state">
+                                <div class="empty-icon"><i class="fas fa-search"></i></div>
+                                <div class="empty-title">Start Searching</div>
+                                <div class="empty-text">Use the filters on the left to find available blood donors.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Become a Donor Section -->
+        <section id="becomeDonor" class="section">
+            <h2 class="section-title">Become a Blood Donor</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">Donor Registration</div>
+                        <div class="card-body">
+                            <form id="donorForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" id="donorName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Blood Group *</label>
+                                    <select class="form-select" id="donorBloodGroup" required>
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Mobile Number *</label>
+                                    <input type="tel" class="form-control" id="donorMobile" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">District *</label>
+                                    <select class="form-select" id="donorDistrict" onchange="updateUpazilas('donor')" required>
+                                        <option value="">Select District</option>
+                                        <option value="Sylhet">Sylhet</option>
+                                        <option value="Sunamganj">Sunamganj</option>
+                                        <option value="Moulvibazar">Moulvibazar</option>
+                                        <option value="Habiganj">Habiganj</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Upazila *</label>
+                                    <select class="form-select" id="donorUpazila" required>
+                                        <option value="">Select Upazila</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Area *</label>
+                                    <input type="text" class="form-control" id="donorArea" placeholder="e.g., Shahpur, Tilghar" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Gender</label>
+                                    <select class="form-select" id="donorGender">
+                                        <option value="">Prefer not to say</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Last Blood Donation Date</label>
+                                    <input type="date" class="form-control" id="lastDonationDate">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Choose a Profile Picture *</label>
+                                    <div class="avatar-picker-grid" id="avatarPickerGrid"></div>
+                                    <input type="hidden" id="selectedAvatarUrl" value="">
+                                    <small class="text-muted d-block mt-2">Photo upload is disabled — pick one of the 20 profile pictures above.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="agreeContact" required>
+                                        <label class="form-check-label" for="agreeContact">
+                                            I agree to be contacted for blood donation requests
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                        <label class="form-check-label" for="agreeTerms">
+                                            I agree to the Terms & Conditions and Privacy Policy
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-submit">
+                                    <i class="fas fa-check"></i> Register as Donor
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Blood Request Section -->
+        <section id="emergencyRequest" class="section">
+            <h2 class="section-title">Emergency Blood Request</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">Submit Emergency Request</div>
+                        <div class="card-body">
+                            <form id="emergencyForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Patient Name *</label>
+                                    <input type="text" class="form-control" id="patientName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Blood Group Required *</label>
+                                    <select class="form-select" id="requiredBloodGroup" required>
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Hospital Name *</label>
+                                    <input type="text" class="form-control" id="hospitalName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">District *</label>
+                                    <select class="form-select" id="emergencyDistrict" required>
+                                        <option value="">Select District</option>
+                                        <option value="Sylhet">Sylhet</option>
+                                        <option value="Sunamganj">Sunamganj</option>
+                                        <option value="Moulvibazar">Moulvibazar</option>
+                                        <option value="Habiganj">Habiganj</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Location / Upazila *</label>
+                                    <input type="text" class="form-control" id="emergencyLocation" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Blood Bags Required *</label>
+                                    <input type="number" class="form-control" id="bagsRequired" min="1" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Required Date *</label>
+                                    <input type="date" class="form-control" id="requiredDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Contact Number *</label>
+                                    <input type="tel" class="form-control" id="emergencyContact" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Urgency Level *</label>
+                                    <select class="form-select" id="urgencyLevel" required>
+                                        <option value="">Select Urgency</option>
+                                        <option value="Critical">Critical (Immediate)</option>
+                                        <option value="Urgent">Urgent (Within Hours)</option>
+                                        <option value="Normal">Normal (Within Days)</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Additional Message</label>
+                                    <textarea class="form-control" id="emergencyMessage" rows="3" placeholder="Any additional details..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-submit" style="background: #ff6b6b;">
+                                    <i class="fas fa-siren"></i> Submit Emergency Request
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">Active Emergency Requests</div>
+                        <div class="card-body">
+                            <div id="emergencyList" style="min-height: 400px;">
+                                <div class="empty-state">
+                                    <div class="empty-icon"><i class="fas fa-inbox"></i></div>
+                                    <div class="empty-text">No emergency requests at the moment</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nearby Donors Section -->
+        <section id="nearbyDonors" class="section" style="display: none;">
+            <h2 class="section-title">Nearby Blood Donors</h2>
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-6">
+                    <button class="btn-submit" onclick="getNearbyDonors()">
+                        <i class="fas fa-location-arrow"></i> Find Nearby Donors
+                    </button>
+                </div>
+            </div>
+            <div id="nearbyResults" class="row" style="min-height: 400px;">
+                <div class="col-12">
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-map"></i></div>
+                        <div class="empty-title">Location Not Enabled</div>
+                        <div class="empty-text">Allow location access to find nearby donors. Click the button above to get started.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Dashboard Section -->
+        <section id="userDashboard" class="section" style="display: none;">
+            <h2 class="section-title">My Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Donor Status</h3>
+                    <p id="dashboardDonorStatus">Not Registered</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Blood Group</h3>
+                    <p id="dashboardBloodGroup">-</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Total Donations</h3>
+                    <p id="dashboardTotalDonations">0</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Last Donation</h3>
+                    <p id="dashboardLastDonation">-</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">My Profile</div>
+                        <div class="card-body" id="profileInfo">
+                            <p>Loading profile...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">Update Availability</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Available for Donation</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="availability" id="availableYes" value="yes" onchange="updateAvailability()">
+                                        <label class="form-check-label" for="availableYes">
+                                            Yes, Available
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="availability" id="availableNo" value="no" onchange="updateAvailability()">
+                                        <label class="form-check-label" for="availableNo">
+                                            Not Available
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section" style="display: none;">
+            <h2 class="section-title">Login / Register</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="card">
+                        <div class="card-header">Sign In to Your Account</div>
+                        <div class="card-body">
+                            <form id="authForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" id="authEmail" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password *</label>
+                                    <input type="password" class="form-control" id="authPassword" required>
+                                </div>
+                                <button type="submit" class="btn-submit" id="authButton">
+                                    <i class="fas fa-sign-in-alt"></i> Sign In
+                                </button>
+                            </form>
+                            <hr>
+                            <p class="text-center text-muted mb-0">Don't have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--primary); text-decoration: none; font-weight: 600;">Create one</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel Section -->
+        <section id="adminPanel" class="section" style="display: none;">
+            <h2 class="section-title">Admin Dashboard</h2>
+            
+            <div class="admin-section">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="switchAdminTab('donors', event)">
+                        <i class="fas fa-users"></i> Donors
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('requests', event)">
+                        <i class="fas fa-file-medical"></i> Blood Requests
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('reports', event)">
+                        <i class="fas fa-flag"></i> Reports
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('users', event)">
+                        <i class="fas fa-user-tie"></i> Users
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('stats', event)">
+                        <i class="fas fa-chart-bar"></i> Statistics
+                    </button>
+                </div>
+
+                <!-- Donors Tab -->
+                <div id="adminDonorsTab" class="admin-tab-content">
+                    <div class="mb-3">
+                        <label class="form-label">Filter by Blood Group</label>
+                        <select class="form-select" id="adminBloodFilter" onchange="loadAdminDonors()">
+                            <option value="">All Blood Groups</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Filter by District</label>
+                        <select class="form-select" id="adminDistrictFilter" onchange="loadAdminDonors()">
+                            <option value="">All Districts</option>
+                            <option value="Sylhet">Sylhet</option>
+                            <option value="Sunamganj">Sunamganj</option>
+                            <option value="Moulvibazar">Moulvibazar</option>
+                            <option value="Habiganj">Habiganj</option>
+                        </select>
+                    </div>
+                    <div id="adminDonorsList" style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Blood Group</th>
+                                    <th>District</th>
+                                    <th>Mobile</th>
+                                    <th>Verified</th>
+                                    <th>Available</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminDonorsBody">
+                                <tr>
+                                    <td colspan="7" class="text-center">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="adminRequestsTab" class="admin-tab-content" style="display: none;">
+                    <div id="adminRequestsList" style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Blood Group</th>
+                                    <th>Hospital</th>
+                                    <th>Location</th>
+                                    <th>Urgency</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminRequestsBody">
+                                <tr>
+                                    <td colspan="8" class="text-center">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="adminReportsTab" class="admin-tab-content" style="display: none;">
+                    <div id="adminReportsList" style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Reporter</th>
+                                    <th>Reported Donor</th>
+                                    <th>Reason</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminReportsBody">
+                                <tr>
+                                    <td colspan="6" class="text-center">No reports yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="adminUsersTab" class="admin-tab-content" style="display: none;">
+                    <div id="adminUsersList" style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>UID</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersBody">
+                                <tr>
+                                    <td colspan="5" class="text-center">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="adminStatsTab" class="admin-tab-content" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="dashboard-card">
+                                <h3>Total Donors</h3>
+                                <p id="statTotalDonors">0</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="dashboard-card">
+                                <h3>Available Donors</h3>
+                                <p id="statAvailableDonors">0</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="dashboard-card">
+                                <h3>Total Requests</h3>
+                                <p id="statTotalRequests">0</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="dashboard-card">
+                                <h3>Emergency Requests</h3>
+                                <p id="statEmergencyRequests">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">Donors by Blood Group</div>
+                                <div class="card-body" id="bloodGroupStats">Loading...</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">Donors by District</div>
+                                <div class="card-body" id="districtStats">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+ 
+    <div id="donorModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalDonorName">Donor Details</h2>
+                <button class="modal-close" onclick="closeDonorModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalDonorBody">
+             
+            </div>
+        </div>
+    </div>
+
+
+    <div class="toast-container" id="toastContainer"></div>
+
+ 
+    <footer class="footer">
+        <div class="container-lg">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h5><i class="fas fa-droplet"></i> Blood Donor Finder</h5>
+                    <p>Connecting blood donors with people in need across Sylhet Division.</p>
+                </div>
+                <div class="footer-section">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="#" onclick="showSection('home'); return false;">Home</a></li>
+                        <li><a href="#" onclick="showSection('findDonor'); return false;">Find Donor</a></li>
+                        <li><a href="#" onclick="showSection('emergencyRequest'); return false;">Emergency Request</a></li>
+                        <li><a href="#" onclick="showSection('becomeDonor'); return false;">Become a Donor</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h5>Information</h5>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h5>Sylhet Division</h5>
+                    <ul>
+                        <li>Sylhet District</li>
+                        <li>Sunamganj District</li>
+                        <li>Moulvibazar District</li>
+                        <li>Habiganj District</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Blood Donor Finder – Sylhet Division. All rights reserved. | "Find a blood donor. Save a life."</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="module" src="script.js"> </script>
+</body>
+</html>
