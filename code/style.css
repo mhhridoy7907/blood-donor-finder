@@ -654,7 +654,7 @@
             padding: 1.5rem;
         }
 
-        /* Toast Notifications */
+      
         .toast-container {
             position: fixed;
             bottom: 20px;
@@ -721,7 +721,7 @@
             color: var(--text-dark);
         }
 
-        /* Badges */
+      
         .badge-custom {
             display: inline-block;
             padding: 0.4rem 0.8rem;
@@ -780,7 +780,7 @@
             min-height: 300px;
         }
 
-        /* Empty State */
+       
         .empty-state {
             text-align: center;
             padding: 3rem 2rem;
