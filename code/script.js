@@ -5,13 +5,13 @@
 
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAgStf6_a4BB-jl9MPJWWcDFjFJ9BM-vnQ",
-            authDomain: "blooddonorfinder-sylhet.firebaseapp.com",
-            projectId: "blooddonorfinder-sylhet",
-            storageBucket: "blooddonorfinder-sylhet.firebasestorage.app",
-            messagingSenderId: "303556876343",
-            appId: "1:303556orfinder-sylhet", 
-            databaseURL: "https://blooddonorfinder-sylhet-default-rtdb.firebaseio.com"
+            apiKey: "***************",
+            authDomain: "*********",
+            projectId: "*************",
+            storageBucket: "*********$$",
+            messagingSenderId: "**********",
+            appId: "1:*******et", 
+            databaseURL: "**************"
         };
 
         // Initialize Firebase
