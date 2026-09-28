@@ -1,169 +1,633 @@
-# 🩸 Blood Donor Finder – Sylhet Division
+# 🩸 Blood Donor Finder — Sylhet Division
 
-**Blood Donor Finder – Sylhet Division** is a web-based platform designed to help people quickly find available blood donors and connect with individuals who need blood in the Sylhet Division of Bangladesh.
+A web-based blood donor discovery and emergency blood request platform designed to connect blood donors with people who need blood across the **Sylhet Division of Bangladesh**.
 
-The platform focuses on connecting blood donors and recipients through blood group, district, upazila, and area-based search.
+The system allows users to register as blood donors, verify their email through OTP, manage their donor profile, search for donors by blood group and location, submit emergency blood requests, and interact with an administrator-managed donor database.
 
-## 📍 Coverage Area
+---
 
-Currently focused on the four districts of Sylhet Division:
+## 🌐 Project Overview
 
-* 🏙️ Sylhet
-* 🌊 Sunamganj
-* 🌿 Moulvibazar
-* 🏞️ Habiganj
+**Blood Donor Finder** is designed to make it easier to find available blood donors quickly during normal and emergency situations.
 
-## ✨ Features
+The platform focuses on:
 
-### 🔎 Find Blood Donor
+* Blood donor registration
+* Email OTP verification
+* Donor search
+* Blood group filtering
+* District and Upazila filtering
+* Emergency blood requests
+* Nearby donor discovery
+* Donor availability management
+* User dashboard
+* Admin dashboard
+* Donor verification
+* Reports management
+* Statistics and donor analytics
 
-Search for available blood donors using:
+The project currently focuses on the four districts of the **Sylhet Division**:
+
+* Sylhet
+* Sunamganj
+* Moulvibazar
+* Habiganj
+
+---
+
+## ✨ Main Features
+
+### 🔎 Find Blood Donors
+
+Users can search for donors using:
 
 * Blood Group
 * District
 * Upazila
 * Area
-* Available Now
+* Availability
 
 Supported blood groups:
 
-`A+` `A-` `B+` `B-` `O+` `O-` `AB+` `AB-`
+* A+
+* A-
+* B+
+* B-
+* O+
+* O-
+* AB+
+* AB-
 
-### 👤 Become a Donor
+---
 
-Donors can register their information, including:
+### 🩸 Become a Blood Donor
+
+Users can register as a donor by providing:
 
 * Full Name
+* Email Address
+* Password
 * Blood Group
 * Mobile Number
 * District
 * Upazila
 * Area
-* Gender (Optional)
+* Gender
 * Last Blood Donation Date
-* Availability Status
-* Profile Photo (Optional)
+* Profile Picture
+* Contact Permission
+* Terms & Conditions Agreement
 
-### 🚨 Emergency Blood Request
+The donor registration form is the main entry point for adding a new donor profile to the platform.
 
-Users can create emergency blood requests with:
+---
+
+## 📧 Email OTP Verification
+
+The registration system uses an email-based OTP verification process.
+
+### Registration Flow
+
+```text
+User enters registration information
+              ↓
+       Temporary User Data
+              ↓
+         Generate OTP
+              ↓
+       Google Apps Script
+              ↓
+       Send OTP to Email
+              ↓
+        User enters OTP
+              ↓
+      OTP verification
+              ↓
+           Verified
+              ↓
+        Account activated
+              ↓
+       User profile created
+```
+
+### Google Apps Script Responsibility
+
+Google Apps Script is intended to handle the OTP delivery process.
+
+It will:
+
+1. Generate a temporary OTP.
+2. Store the OTP in the temporary registration data.
+3. Send the OTP to the user's email address.
+
+It will **not** handle the complete account system.
+
+---
+
+## 🔐 Custom Account System
+
+This project does **not** use Firebase Authentication.
+
+Instead, the application uses a custom account structure stored in Firebase Realtime Database.
+
+Conceptually:
+
+```text
+Email + Password
+       ↓
+Firebase Database
+       ↓
+Find User
+       ↓
+Verify Account
+       ↓
+Verify Password
+       ↓
+Login
+```
+
+Only verified accounts should be allowed to access authenticated user features.
+
+---
+
+## 🗂️ Temporary Registration Data
+
+Before email verification, registration information can be stored temporarily.
+
+Example structure:
+
+```text
+temporaryUsers/
+    tempId/
+        name
+        email
+        passwordHash
+        bloodGroup
+        mobile
+        district
+        upazila
+        area
+        gender
+        lastDonationDate
+        avatar
+        otp
+        otpExpiresAt
+        verified: false
+```
+
+After successful verification, the temporary registration can be converted into a permanent user/donor record.
+
+---
+
+## 👤 User Data
+
+A verified user can have a permanent profile such as:
+
+```text
+users/
+    userId/
+        name
+        email
+        passwordHash
+        bloodGroup
+        mobile
+        district
+        upazila
+        area
+        gender
+        lastDonationDate
+        avatar
+        verified: true
+        available: true
+        createdAt
+```
+
+---
+
+## 📊 User Dashboard
+
+The user dashboard provides information about the donor account.
+
+It can display:
+
+* Donor Status
+* Blood Group
+* Total Donations
+* Last Donation
+* Personal Profile
+* Donation Availability
+
+Users can update their availability status between:
+
+* Available
+* Not Available
+
+---
+
+## 🚨 Emergency Blood Requests
+
+Users can submit emergency blood requests with information such as:
 
 * Patient Name
-* Blood Group
+* Required Blood Group
 * Hospital Name
 * District
-* Upazila / Location
-* Required Blood Bags
+* Location / Upazila
+* Blood Bags Required
 * Required Date
 * Contact Number
-* Emergency Status
+* Urgency Level
+* Additional Message
 
-### 📍 Donor Details
+### Urgency Levels
 
-Users can view available donor information and contact donors through:
+* Critical — Immediate
+* Urgent — Within Hours
+* Normal — Within Days
 
-* 📞 Call
-* 💬 WhatsApp
+Emergency requests can be displayed to help connect suitable donors with people who need blood.
 
-Users can also report inappropriate or fake donor profiles.
+---
 
-### 🗺️ Nearby Donors
+## 📍 Nearby Donors
 
-Find potentially nearby donors based on location and manually selected areas.
+The platform includes a nearby donor feature.
 
-### 🔐 Authentication
+Users can allow browser location access and use:
 
-User account functionality with:
+```text
+Find Nearby Donors
+```
 
-* User Registration
-* Login
-* Logout
-* Profile Management
-* Donor Profile Management
+to search for donors near their current location.
 
-### 🛡️ Admin Panel
+---
 
-Administrators can manage:
+## 👨‍💼 Admin Dashboard
+
+The system includes an administrator dashboard.
+
+### Admin Sections
 
 * Donors
-* Donor Verification
 * Blood Requests
-* Emergency Requests
-* User Reports
-* Blocked Users
-* Blood Group Statistics
+* Reports
+* Users
+* Statistics
 
-## 🛠️ Technology Stack
+### Donor Management
+
+Admin can view donor information including:
+
+* Name
+* Blood Group
+* District
+* Mobile Number
+* Verification Status
+* Availability
+
+### Blood Request Management
+
+Admin can manage emergency blood requests and view:
+
+* Patient
+* Blood Group
+* Hospital
+* Location
+* Urgency
+* Required Date
+* Status
+
+### Reports
+
+Users can report donor-related issues.
+
+The administrator can review submitted reports and take appropriate action.
+
+### Users
+
+The admin dashboard can display:
+
+* Email
+* User ID
+* Account Status
+* Creation Date
+
+### Statistics
+
+The dashboard provides statistics such as:
+
+* Total Donors
+* Available Donors
+* Total Blood Requests
+* Emergency Requests
+* Donors by Blood Group
+* Donors by District
+
+---
+
+## 🔥 Firebase Realtime Database
+
+Firebase Realtime Database is used as the primary application database.
+
+Possible data structure:
+
+```text
+Firebase Realtime Database
+│
+├── temporaryUsers/
+│
+├── users/
+│
+├── donors/
+│
+├── bloodRequests/
+│
+├── emergencyRequests/
+│
+├── reports/
+│
+└── settings/
+```
+
+Firebase is responsible for storing and retrieving application data.
+
+---
+
+## 🔒 Database Security
+
+The project is designed around restricted database writing.
+
+### General Users
+
+Users should not be allowed to freely modify protected database records.
+
+```text
+Read  → Allowed where required
+Write → Restricted
+```
+
+### Administrative Operations
+
+Protected write operations should be performed through a trusted administrative/server-side mechanism.
+
+> Firebase Authentication is not used in this custom account architecture, so Firebase `auth.uid` cannot be used directly as the application's user identity.
+
+For production deployment, sensitive operations should be protected by a trusted server-side layer rather than exposing privileged credentials in frontend JavaScript.
+
+---
+
+## 🧩 Technology Stack
+
+### Frontend
 
 * HTML5
 * CSS3
 * JavaScript
-* Firebase Authentication
-* Firebase Firestore / Realtime Database
-* Firebase Storage
-* Firebase Hosting
-* Leaflet / OpenStreetMap (for map features, if enabled)
+* Bootstrap 5
+* Font Awesome
 
-## 🔥 Backend
+### Backend / Services
 
-The application uses **Firebase** as its backend infrastructure for:
+* Firebase Realtime Database
+* Google Apps Script
+* Gmail
 
-* User Authentication
-* Donor Data
-* Blood Requests
-* User Profiles
-* Profile Photos
-* Application Data
+### Authentication Model
 
-## 🎯 Project Goal
-
-The goal of this project is to make it easier for people in Sylhet Division to find blood donors quickly during emergency situations and encourage more people to become regular blood donors.
-
-> 🩸 **Find a donor. Donate blood. Save a life.**
-
-## 🔒 Privacy & Safety
-
-The platform is designed with privacy and safety in mind.
-
-* Donor information should be handled responsibly.
-* Sensitive personal information should not be publicly exposed.
-* Donor contact should be provided through appropriate contact actions.
-* Users can report suspicious or inappropriate profiles.
-* Admins can verify donors and manage reported accounts.
-
-## 🚀 Future Plans
-
-Future improvements may include:
-
-* 📱 Android and iOS mobile applications
-* 🔔 Emergency notifications
-* 📍 Advanced nearby donor matching
-* 🗺️ Interactive donor map
-* ✅ Verified donor system
-* 🏥 Hospital integration
-* 📊 Advanced analytics
-* 🇧🇩 Expansion to other divisions of Bangladesh
-
-## 🤝 Contributing
-
-Contributions, suggestions, and feedback are welcome.
-
-If you would like to contribute:
-
-1. Fork the repository.
-2. Create a new feature branch.
-3. Make your changes.
-4. Commit your changes.
-5. Open a Pull Request.
-
-## ⚠️ Disclaimer
-
-Blood Donor Finder is a platform intended to help connect blood donors and people looking for blood. It does not replace professional medical advice, hospital services, or medical eligibility screening. Donors and recipients should verify all information and follow appropriate medical guidance.
+* Custom account system
+* Email OTP verification
+* No Firebase Authentication
 
 ---
 
-### 🩸 Blood Donor Finder – Sylhet Division
+## 📁 Project Structure
 
-**Connecting blood donors with people in need across Sylhet Division, Bangladesh.**
+A possible project structure:
 
-© 2026 Blood Donor Finder – Sylhet Division
+```text
+blood-donor-finder/
+│
+├── index.html
+├── style.css
+├── script.js
+├── README.md
+│
+├── assets/
+│   ├── images/
+│   ├── icons/
+│   └── avatars/
+│
+└── apps-script/
+    └── Code.gs
+```
+
+---
+
+## 🖥️ Main Pages / Sections
+
+The application contains the following major sections:
+
+### Home
+
+Provides:
+
+* Project introduction
+* Total donor statistics
+* Available donor statistics
+* Blood request statistics
+* Emergency request statistics
+* Sylhet Division district information
+* How It Works section
+* Become a Donor call-to-action
+
+### Find Donor
+
+Allows users to search and filter available blood donors.
+
+### Become a Donor
+
+Provides the donor registration form.
+
+### Emergency Request
+
+Allows users to submit emergency blood requirements.
+
+### Nearby Donors
+
+Provides location-based donor discovery.
+
+### User Dashboard
+
+Allows verified users to view and manage their donor information.
+
+### Login / Register
+
+Provides custom account login and registration.
+
+### Admin Dashboard
+
+Provides administrative management and statistics.
+
+---
+
+## 🗺️ Supported Location
+
+The current project focuses on:
+
+### Sylhet Division
+
+| District    |
+| ----------- |
+| Sylhet      |
+| Sunamganj   |
+| Moulvibazar |
+| Habiganj    |
+
+Each district can contain multiple Upazilas and local areas for more detailed donor searching.
+
+---
+
+## ⚙️ Registration Security Flow
+
+A simplified registration process:
+
+```text
+1. User opens registration
+2. User enters personal information
+3. User enters email
+4. User requests OTP
+5. Temporary registration is created
+6. OTP is generated
+7. OTP is stored temporarily
+8. OTP is sent through email
+9. User enters received OTP
+10. OTP is verified
+11. Account becomes verified
+12. Permanent user/donor record is created
+13. User can log in
+```
+
+---
+
+## ⏱️ OTP Expiration
+
+OTP should have a limited validity period.
+
+Example:
+
+```text
+OTP
+ ↓
+Generated
+ ↓
+Valid for a limited time
+ ↓
+Expires
+ ↓
+New OTP required
+```
+
+Expired OTPs should not be accepted.
+
+---
+
+## 🛡️ Recommended Security Practices
+
+For production use:
+
+* Never expose Firebase privileged credentials in frontend JavaScript.
+* Do not store plaintext passwords.
+* Store password hashes instead of raw passwords.
+* Do not expose OTP values to public users.
+* Add OTP expiration.
+* Add OTP request rate limiting.
+* Limit repeated verification attempts.
+* Protect temporary registration data.
+* Validate all user input.
+* Sanitize displayed user-generated content.
+* Restrict administrative operations.
+* Keep private donor information protected.
+* Use HTTPS in production.
+* Avoid exposing unnecessary personal information publicly.
+
+---
+
+## 🎯 Project Goals
+
+The main goals of Blood Donor Finder are:
+
+1. Make blood donor discovery faster.
+2. Connect donors with people who need blood.
+3. Provide location-based donor searching.
+4. Support emergency blood requests.
+5. Verify donor accounts through email OTP.
+6. Provide donor availability information.
+7. Give administrators tools to manage the platform.
+8. Maintain a structured donor database.
+9. Improve access to blood donors across Sylhet Division.
+
+---
+
+## 🚀 Future Improvements
+
+Possible future features include:
+
+* Advanced donor verification
+* Better location-based searching
+* Donor availability reminders
+* Blood donation history
+* Donation eligibility reminders
+* Emergency request notifications
+* Email notifications
+* Improved anti-spam protection
+* Account recovery
+* Password reset
+* Advanced admin analytics
+* Donor reputation/reporting system
+* Mobile application
+* Progressive Web App support
+
+---
+
+## 📜 Terms & Privacy
+
+Users should agree to the platform's Terms & Conditions and Privacy Policy before completing donor registration.
+
+The platform should only expose the donor information necessary for blood donation communication.
+
+---
+
+## ❤️ Mission
+
+> **Find a blood donor. Save a life.**
+
+Blood Donor Finder aims to make it easier for people in Sylhet Division to find suitable blood donors quickly when they need help.
+
+---
+
+## 👨‍💻 Developer
+
+**MH2 HRIDOY**
+
+Web and Mobile App Developer
+
+GitHub: `@mhhridoy7907`
+
+---
+
+## 📌 Project Status
+
+**Status:** Active Development
+
+**🚧 Under Construction**
+
+The project is currently under active development and is being improved with Firebase, JavaScript, and Google Apps Script-based services.
+
+---
+
+## 📄 License
+
+This project is intended for educational and development purposes.
+
+A suitable open-source license can be added to the repository when the project is ready for public distribution.
