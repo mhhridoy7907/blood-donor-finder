@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/🚧-UNDER%20CONSTRUCTION-orange?style=for-the-badge" alt="Under Construction">
+<img src="img/mh hridoy.png" alt="Under Construction">
 
 # 🩸 Blood Donor Finder — Sylhet Division
 
